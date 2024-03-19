@@ -1,0 +1,160 @@
+`timescale 1ns / 1ps
+////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer:
+//
+// Create Date:    23:46:09 03/19/24
+// Design Name:    
+// Module Name:    mul8_8_v2
+// Project Name:   
+// Target Device:  
+// Tool versions:  
+// Description:
+//
+// Dependencies:
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+////////////////////////////////////////////////////////////////////////////////
+module mul8_8_v2(p,a,b);
+    output [16:0] p;
+    input [7:0] a,b;
+
+	 wire [64:1]w;
+	 wire [17:0]s;
+	 wire [17:0]c;
+	 wire [12:0]m;
+	 wire [12:0]n;
+	 wire [12:1]r;
+
+// wire assignment
+	// line 1
+	and(w[1],a[0],b[0]);
+	and(w[2],a[0],b[1]);
+	and(w[3],a[0],b[2]);
+	and(w[4],a[0],b[3]);
+	and(w[5],a[0],b[4]);
+	and(w[6],a[0],b[5]);
+	and(w[7],a[0],b[6]);
+	and(w[8],a[0],b[7]);
+	and(w[9],a[1],b[7]);
+	and(w[10],a[2],b[7]);
+	and(w[11],a[3],b[7]);
+	and(w[12],a[4],b[7]);
+	and(w[13],a[5],b[7]);
+	and(w[14],a[6],b[7]);
+	and(w[15],a[7],b[7]);
+	// line 2
+	and(w[16],a[1],b[0]);
+	and(w[17],a[1],b[1]);
+	and(w[18],a[1],b[2]);
+	and(w[19],a[1],b[3]);
+	and(w[20],a[1],b[4]);
+	and(w[21],a[1],b[5]);
+	and(w[22],a[1],b[6]);
+	and(w[23],a[2],b[6]);
+	and(w[24],a[3],b[6]);
+	and(w[25],a[4],b[6]);
+	and(w[26],a[5],b[6]);
+	and(w[27],a[6],b[6]);
+	and(w[28],a[7],b[6]);
+	// line 3
+	and(w[29],a[2],b[0]);
+	and(w[30],a[2],b[1]);
+	and(w[31],a[2],b[2]);
+	and(w[32],a[2],b[3]);
+	and(w[33],a[2],b[4]);
+	and(w[34],a[2],b[5]);
+	and(w[35],a[3],b[5]);
+	and(w[36],a[4],b[5]);
+	and(w[37],a[5],b[5]);
+	and(w[38],a[6],b[5]);
+	and(w[39],a[7],b[5]);
+	// line 4
+	and(w[40],a[3],b[0]);
+	and(w[41],a[3],b[1]);
+	and(w[42],a[3],b[2]);
+	and(w[43],a[3],b[3]);
+	and(w[44],a[3],b[4]);
+	and(w[45],a[4],b[4]);
+	and(w[46],a[5],b[4]);
+	and(w[47],a[6],b[4]);
+	and(w[48],a[7],b[4]);
+	//line 5
+	and(w[49],a[4],b[0]);
+	and(w[50],a[4],b[1]);
+	and(w[51],a[4],b[2]);
+	and(w[52],a[4],b[3]);
+	and(w[53],a[5],b[3]);
+	and(w[54],a[6],b[3]);
+	and(w[55],a[7],b[3]);
+	//line 6
+	and(w[56],a[5],b[0]);
+	and(w[57],a[5],b[1]);
+	and(w[58],a[5],b[2]);
+	and(w[59],a[6],b[2]);
+	and(w[60],a[7],b[2]);
+	//line 7
+	and(w[61],a[6],b[0]);
+	and(w[62],a[6],b[1]);
+	and(w[63],a[7],b[1]);
+	//line 8
+	and(w[64],a[7],b[0]);
+
+//stage 1
+	 assign p[0] = w[1];
+	 HA h1(s[0],c[0],w[2],w[16]);
+	 FA f1(s[1],c[1],w[3],w[17],w[29]);
+	 approx4_2v2 m1(s[2],c[2],w[4],w[18],w[30],w[40]);
+	 approx4_2v2 m2(s[3],c[3],w[5],w[19],w[31],w[41]);
+	 approx4_2v2 m3(s[4],c[4],w[6],w[20],w[32],w[42]);
+	 HA h2(s[13],c[13],w[50],w[56]);
+	 approx4_2v2 m4(s[5],c[5],w[7],w[21],w[33],w[43]);
+	 FA f2(s[14],c[14],w[51],w[57],w[61]);
+	 approx4_2v2 m5(s[6],c[6],w[8],w[22],w[34],w[44]);
+	 approx4_2v2 m6(s[15],c[15],w[52],w[58],w[62],w[64]);
+	 approx4_2v2 m7(s[7],c[7],w[9],w[23],w[35],w[45]);
+	 FA f3(s[16],c[16],w[53],w[62],w[63]);
+	 approx4_2v2 m8(s[8],c[8],w[10],w[24],w[36],w[46]);
+	 HA h3(s[17],c[17],w[54],w[60]);
+	 approx4_2v2 m9(s[9],c[9],w[11],w[25],w[37],w[47]);  
+	 approx4_2v2 m10(s[10],c[10],w[12],w[26],w[38],w[48]);
+	 FA f4(s[11],c[11],w[13],w[27],w[38]);
+	 HA h4(s[12],c[12],w[14],w[28]);
+
+//stage 2
+	 assign p[1] = s[0];
+	 HA hf1(m[0],n[0],s[1],c[0]);
+	 HA hf2(m[1],n[1],s[2],c[1]);
+	 FA ff1(m[2],n[2],s[3],c[2],w[49]);
+	 FA ff2(m[3],n[3],s[4],c[3],s[13]);
+	 approx4_2v2 mn1(m[4],n[4],s[5],c[4],s[14],c[13]);
+	 approx4_2v2 mn2(m[5],n[5],s[6],c[5],s[15],c[14]);
+	 approx4_2v2 mn3(m[6],n[6],s[7],c[6],s[16],c[15]);
+	 approx4_2v2 mn4(m[7],n[7],s[8],c[7],s[17],c[16]);
+	 approx4_2v2 mn5(m[8],n[8],s[9],c[8],w[55],c[17]);
+	 HA hf3(m[9],n[9],s[10],c[9]);
+	 HA hf4(m[10],n[10],s[11],c[10]);
+	 HA hf5(m[11],n[11],s[12],c[11]);
+	 HA hf6(m[12],n[12],w[15],c[12]);
+
+//stage 3
+	assign p[2]=m[0];
+	HA hc1(p[3],r[1],m[1],n[0]);
+	FA	fc2(p[4],r[2],m[2],n[1],r[1]);
+	FA	fc3(p[5],r[3],m[3],n[2],r[2]);
+	FA	fc5(p[6],r[4],m[4],n[3],r[3]);
+	FA	fc6(p[7],r[5],m[5],n[4],r[4]);
+	FA	fc7(p[8],r[6],m[6],n[5],r[5]);
+	FA	fc8(p[9],r[7],m[7],n[6],r[6]);
+	FA	fc9(p[10],r[8],m[8],n[7],r[7]);
+	FA	fc10(p[11],r[9],m[9],n[8],r[8]);
+	FA	fc11(p[12],r[10],m[10],n[9],r[9]);
+	FA	fc12(p[13],r[11],m[11],n[10],r[10]);
+	FA	fc13(p[14],r[12],m[12],n[11],r[11]);
+	HA	fc14(p[15],p[16],n[12],r[12]);
+
+
+endmodule
